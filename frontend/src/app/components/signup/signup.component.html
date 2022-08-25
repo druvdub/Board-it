@@ -1,0 +1,71 @@
+<div class="container">
+  <div class="column"></div>
+  <div class="column">
+    <h1>Signup</h1>
+    <form
+      [formGroup]="signupForm"
+      (ngSubmit)="f.form.valid && onSubmit()"
+      novalidate
+      #f="ngForm"
+      class="form-page"
+    >
+      <mat-form-field class="full-width" appearance="outline">
+        <input matInput placeholder="Email" formControlName="email" />
+        <mat-error
+          *ngIf="
+            !signupForm.get('email')?.errors?.required &&
+            signupForm.get('email')?.errors?.pattern
+          "
+        >
+          Please enter a valid email address
+        </mat-error>
+        <mat-error
+          *ngIf="
+            signupForm.get('email')?.invalid &&
+            (signupForm.get('email')?.dirty ||
+              signupForm.get('email')?.touched) &&
+            signupForm.get('email')?.errors?.required
+          "
+        >
+          Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="outline">
+        <input
+          matInput
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+        />
+        <mat-error *ngIf="!signupForm.get('password')?.errors?.required">
+          Password length must be greater than or equal to 8 and password must
+          contain one or more uppercase , lowercase , numeric and special
+          characters
+        </mat-error>
+        <mat-error
+          *ngIf="
+            signupForm.get('password')?.invalid &&
+            (signupForm.get('password')?.dirty ||
+              signupForm.get('password')?.touched) &&
+            signupForm.get('password')?.errors?.required
+          "
+        >
+          Password is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <button
+        [disabled]="!signupForm.valid"
+        mat-raised-button
+        color="primary"
+        mat-button
+      >
+        Signup
+      </button>
+    </form>
+    <div class="linkWrapper">
+      <small><a routerLink="../login">Already have an account?</a></small>
+    </div>
+  </div>
+</div>

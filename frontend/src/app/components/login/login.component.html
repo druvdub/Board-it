@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="column"></div>
+  <div class="column">
+    <h1>Login</h1>
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="f.form.valid && onSubmit()"
+      novalidate
+      #f="ngForm"
+      class="form-page"
+    >
+      <mat-form-field class="full-width" appearance="outline">
+        <input matInput placeholder="Email" formControlName="email" />
+        <mat-error
+          *ngIf="
+            !loginForm.get('email')?.errors?.required &&
+            loginForm.get('email')?.errors?.pattern
+          "
+        >
+          Please enter a valid email address
+        </mat-error>
+        <mat-error
+          *ngIf="
+            loginForm.get('email')?.invalid &&
+            (loginForm.get('email')?.dirty ||
+              loginForm.get('email')?.touched) &&
+            loginForm.get('email')?.errors?.required
+          "
+        >
+          Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="outline">
+        <input
+          matInput
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+        />
+        <mat-error
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            (loginForm.get('password')?.dirty ||
+              loginForm.get('password')?.touched) &&
+            loginForm.get('password')?.errors?.required
+          "
+        >
+          Password is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <button
+        [disabled]="!loginForm.valid"
+        mat-raised-button
+        color="#ad5389"
+        mat-button
+      >
+        Login
+      </button>
+    </form>
+    <div class="linkWrapper">
+      <small><a routerLink="../signup">New User?</a></small>
+    </div>
+  </div>
+</div>
