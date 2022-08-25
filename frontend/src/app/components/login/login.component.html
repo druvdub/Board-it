@@ -4,9 +4,8 @@
     <h1>Login</h1>
     <form
       [formGroup]="loginForm"
-      (ngSubmit)="f.form.valid && onSubmit()"
+      (ngSubmit)="onSubmit()"
       novalidate
-      #f="ngForm"
       class="form-page"
     >
       <mat-form-field class="full-width" appearance="outline">
@@ -54,6 +53,7 @@
         [disabled]="!loginForm.valid"
         mat-raised-button
         color="#ad5389"
+        type="submit"
         mat-button
       >
         Login

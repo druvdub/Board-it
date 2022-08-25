@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/_services/auth.service';
+import { StorageService } from 'src/app/_services/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -9,8 +16,14 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup | any;
+  submitted: boolean = false;
+  isLoggedIn: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private storageService: StorageService,
+    private authService: AuthService
+  ) {
     this.loginForm = new FormGroup({
       email: new FormControl('', [
         Validators.required,
@@ -24,7 +37,36 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.submitted = false;
+    if (this.storageService.isLoggedIn()) {
+      // this.router.navigate(['/user']);
+      console.log('lego');
+    }
+    this.isLoggedIn = this.storageService.isLoggedIn();
+  }
 
-  onSubmit(): void {}
+  onSubmit(): void {
+    this.submitted = true;
+
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+
+      this.authService.login(email, password).subscribe({
+        next: (data) => {
+          this.storageService.saveUser(data);
+          this.reloadPage();
+          // this.router.navigate[]
+        },
+        error: (error) => {
+          this.loginForm.reset();
+          console.log(error);
+        },
+      });
+    }
+  }
+
+  reloadPage(): void {
+    window.location.reload();
+  }
 }

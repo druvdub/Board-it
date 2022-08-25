@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/_services/auth.service';
+import { StorageService } from 'src/app/_services/storage.service';
 
 @Component({
   selector: 'app-signup',
@@ -9,8 +11,10 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent implements OnInit {
   signupForm: FormGroup | any;
+  submitted: boolean = false;
+  isSuccessful: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
     this.signupForm = new FormGroup({
       email: new FormControl('', [
         Validators.required,
@@ -26,7 +30,28 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.submitted = false;
+  }
 
-  onSubmit(): void {}
+  onSubmit(): void {
+    this.submitted = true;
+
+    if (this.signupForm.valid) {
+      const { email, password } = this.signupForm.value;
+
+      this.authService.signup(email, password).subscribe({
+        next: (data: any) => {
+          this.isSuccessful = true;
+          this.router.navigate(['login']);
+          // this.router.navigate[]
+        },
+        error: (error) => {
+          this.signupForm.reset();
+          this.isSuccessful = false;
+          console.log(error);
+        },
+      });
+    }
+  }
 }

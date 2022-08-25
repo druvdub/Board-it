@@ -4,9 +4,8 @@
     <h1>Signup</h1>
     <form
       [formGroup]="signupForm"
-      (ngSubmit)="f.form.valid && onSubmit()"
+      (ngSubmit)="onSubmit()"
       novalidate
-      #f="ngForm"
       class="form-page"
     >
       <mat-form-field class="full-width" appearance="outline">
@@ -59,6 +58,7 @@
         [disabled]="!signupForm.valid"
         mat-raised-button
         color="primary"
+        type="submit"
         mat-button
       >
         Signup
