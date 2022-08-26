@@ -5,7 +5,6 @@ const db = require("./models");
 
 db.sequelize.sync({ force: true }).then(() => {
   console.log("Drop and Resync Db");
-  initial();
 });
 
 // db.sequelize.sync();
@@ -19,6 +18,7 @@ app.use(
   })
 );
 
+// defining middleware
 app.use(express.json());
 app.use(require("./middleware/logger"));
 app.use(express.urlencoded({ extended: true }));
@@ -35,6 +35,8 @@ app.get("/", (req, res) => {
 
   res.send("test");
 });
+
+require("./routes/auth.routes")(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

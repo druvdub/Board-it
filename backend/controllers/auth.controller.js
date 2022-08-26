@@ -90,10 +90,9 @@ exports.refreshToken = async (req, res) => {
     if (RefreshToken.verifyExpiration(refreshToken)) {
       RefreshToken.destroy({ where: { id: refreshToken.id } });
 
-      res.status(403).json({
+      return res.status(403).send({
         message: "Refresh token was expired. New login request needed",
       });
-      return;
     }
 
     const user = await refreshToken.getUser();
@@ -120,6 +119,7 @@ exports.logout = async (req, res, next) => {
     });
     RefreshToken.destroy({ where: { id: refreshToken.id } });
     req.session = null;
+    req.body.refreshToken = null;
     res.status(200).json({
       message: "Logged Out",
     });
