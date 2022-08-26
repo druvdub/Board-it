@@ -1,4 +1,4 @@
-const logger = (req, res, next) => {
+function logger(req, res, next) {
   res.on("finish", () => {
     console.log(
       `${req.method} ${req.originalUrl} ${
@@ -7,6 +7,6 @@ const logger = (req, res, next) => {
     );
   });
   next();
-};
+}
 
-export default logger;
+module.exports = logger;
