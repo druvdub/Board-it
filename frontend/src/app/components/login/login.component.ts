@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.submitted = false;
     if (this.storageService.isLoggedIn()) {
-      // this.router.navigate(['/user']);
+      this.router.navigate(['/home']);
       console.log('lego');
     }
     this.isLoggedIn = this.storageService.isLoggedIn();
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
         next: (data) => {
           this.storageService.saveUser(data);
           this.reloadPage();
-          // this.router.navigate[]
+          this.router.navigate(['/home']);
         },
         error: (error) => {
           this.loginForm.reset();
