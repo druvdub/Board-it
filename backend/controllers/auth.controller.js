@@ -34,6 +34,7 @@ exports.signup = (req, res) => {
 };
 
 exports.login = (req, res) => {
+  // find user in database
   User.findOne({
     where: {
       email: req.body.email,
@@ -112,15 +113,16 @@ exports.refreshToken = async (req, res) => {
   }
 };
 
+/*
 exports.logout = async (req, res, next) => {
-  // const { refreshToken: requestToken } = req.body;
-  // console.log(req);
+  const { refreshToken: requestToken } = req.body;
+  console.log(req);
   try {
-    // let refreshToken = await RefreshToken.findOne({
-    //   where: {
-    //     token: requestToken,
-    //   },
-    // });
+    let refreshToken = await RefreshToken.findOne({
+      where: {
+        token: requestToken,
+      },
+    });
 
     RefreshToken.destroy({ where: { Userid: currentID } });
     req.session = null;
@@ -132,3 +134,4 @@ exports.logout = async (req, res, next) => {
     next(err);
   }
 };
+*/
