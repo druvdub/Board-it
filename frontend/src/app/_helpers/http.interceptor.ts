@@ -5,27 +5,102 @@ import {
   HttpEvent,
   HttpInterceptor,
   HTTP_INTERCEPTORS,
+  HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  Observable,
+  switchMap,
+  throwError,
+  filter,
+  take,
+} from 'rxjs';
+
 import { StorageService } from '../_services/storage.service';
+import { AuthService } from '../_services/auth.service';
+
+const TOKEN_HEADER = 'x-access-token';
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
-  private TOKEN_HEADER = 'x-access-token';
-  constructor(private token: StorageService) {}
+  private refreshed: boolean = false;
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
+
+  constructor(
+    private authService: AuthService,
+    private storageService: StorageService
+  ) {}
 
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
-    const token = this.token.getToken();
+  ): Observable<HttpEvent<Object>> {
+    let authRequest = request;
+    const token = this.storageService.getToken();
+
     if (token != null) {
-      request = request.clone({
-        withCredentials: true,
-        headers: request.headers.set(this.TOKEN_HEADER, token),
-      });
+      // request = request.clone({
+      //   withCredentials: true,
+      //   headers: request.headers.set(TOKEN_HEADER, token),
+      // });
+      authRequest = this.tokenHandler(request, token);
     }
-    return next.handle(request);
+
+    return next.handle(authRequest).pipe(
+      catchError((error) => {
+        if (
+          error instanceof HttpErrorResponse &&
+          !authRequest.url.includes('auth/login')
+        ) {
+          return this.handleError(authRequest, next);
+        }
+
+        return throwError(() => new Error(error));
+      })
+    );
+  }
+
+  private handleError(req: HttpRequest<unknown>, next: HttpHandler) {
+    if (!this.refreshed) {
+      this.refreshed = true;
+      this.refreshTokenSubject.next(null);
+
+      const token = this.storageService.getRefreshToken();
+
+      if (token) {
+        return this.authService.refreshToken(token).pipe(
+          switchMap((token: any) => {
+            this.refreshed = false;
+
+            this.storageService.saveToken(token.accessToken);
+            this.refreshTokenSubject.next(token.accessToken);
+
+            return next.handle(this.tokenHandler(req, token.accessToken));
+          }),
+          catchError((error) => {
+            this.refreshed = false;
+
+            this.storageService.clean();
+            return throwError(() => new Error(error));
+          })
+        );
+      }
+    }
+
+    return this.refreshTokenSubject.pipe(
+      filter((token) => token != null),
+      take(1),
+      switchMap((token) => next.handle(this.tokenHandler(req, token)))
+    );
+  }
+
+  private tokenHandler(req: HttpRequest<unknown>, token: string) {
+    return req.clone({
+      headers: req.headers.set(TOKEN_HEADER, token),
+    });
   }
 }
 

@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup | any;
   submitted: boolean = false;
   isLoggedIn: boolean = false;
+  errorMessage: string = '';
 
   constructor(
     private router: Router,
@@ -34,7 +35,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.submitted = false;
-    if (this.storageService.isLoggedIn() && this.storageService.getToken()) {
+    if (this.storageService.getToken()) {
+      this.isLoggedIn = true;
       this.router.navigate(['/home']);
       console.log('it works');
     }
@@ -60,7 +62,8 @@ export class LoginComponent implements OnInit {
         error: (error) => {
           this.loginForm.reset();
           this.isLoggedIn = false;
-          console.log(error);
+          this.errorMessage = error.error.message;
+          console.log(this.errorMessage);
         },
       });
     }

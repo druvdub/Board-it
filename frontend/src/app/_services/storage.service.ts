@@ -15,7 +15,7 @@ export class StorageService {
   clean(): void {
     this.isLogged = false;
     window.sessionStorage.clear();
-    this.router.navigate(['login']);
+    // this.router.navigate(['login']);
   }
 
   public saveToken(token: string): void {
