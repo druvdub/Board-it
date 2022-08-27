@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/_services/auth.service';
 import { StorageService } from 'src/app/_services/storage.service';
@@ -39,9 +34,9 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.submitted = false;
-    if (this.storageService.isLoggedIn()) {
+    if (this.storageService.isLoggedIn() && this.storageService.getToken()) {
       this.router.navigate(['/home']);
-      console.log('lego');
+      console.log('it works');
     }
     this.isLoggedIn = this.storageService.isLoggedIn();
   }
@@ -55,11 +50,16 @@ export class LoginComponent implements OnInit {
       this.authService.login(email, password).subscribe({
         next: (data) => {
           this.storageService.saveUser(data);
+          this.storageService.saveToken(data.accessToken);
+          this.storageService.saveRefreshToken(data.refreshToken);
+
+          this.isLoggedIn = true;
           this.reloadPage();
           this.router.navigate(['/home']);
         },
         error: (error) => {
           this.loginForm.reset();
+          this.isLoggedIn = false;
           console.log(error);
         },
       });

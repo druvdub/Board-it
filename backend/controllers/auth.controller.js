@@ -7,6 +7,8 @@ const bcrypt = require("bcryptjs");
 
 const Op = db.Sequelize.Op;
 
+var currentID;
+
 exports.signup = (req, res) => {
   // save user to database
   User.create({
@@ -17,8 +19,8 @@ exports.signup = (req, res) => {
       if (req.body.email) {
         User.findOne({
           where: {
-            name: {
-              [Op.or]: req.body.email,
+            email: {
+              [Op.eq]: req.body.email,
             },
           },
         }).then(() => {
@@ -57,6 +59,7 @@ exports.login = (req, res) => {
       });
 
       let refreshToken = await RefreshToken.createToken(user);
+      currentID = user.id;
       return res.status(200).send({
         id: user.id,
         email: user.email,
@@ -110,21 +113,22 @@ exports.refreshToken = async (req, res) => {
 };
 
 exports.logout = async (req, res, next) => {
-  const { refreshToken: requestToken } = req.body;
+  // const { refreshToken: requestToken } = req.body;
+  // console.log(req);
   try {
-    let refreshToken = await RefreshToken.findOne({
-      where: {
-        token: requestToken,
-      },
-    });
-    RefreshToken.destroy({ where: { id: refreshToken.id } });
+    // let refreshToken = await RefreshToken.findOne({
+    //   where: {
+    //     token: requestToken,
+    //   },
+    // });
+
+    RefreshToken.destroy({ where: { Userid: currentID } });
     req.session = null;
-    req.body.refreshToken = null;
-    res.status(200).json({
+
+    return res.status(200).send({
       message: "Logged Out",
     });
-    return;
   } catch (err) {
-    this.next(err);
+    next(err);
   }
 };

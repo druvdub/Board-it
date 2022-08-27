@@ -44,7 +44,6 @@ export class SignupComponent implements OnInit {
         next: (data: any) => {
           this.isSuccessful = true;
           this.router.navigate(['login']);
-          // this.router.navigate[]
         },
         error: (error) => {
           this.signupForm.reset();

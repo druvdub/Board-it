@@ -3,11 +3,11 @@ const cors = require("cors");
 const session = require("cookie-session");
 const db = require("./models");
 
-db.sequelize.sync({ force: true }).then(() => {
-  console.log("Drop and Resync Db");
-});
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log("Drop and Resync Db");
+// });
 
-// db.sequelize.sync();
+db.sequelize.sync();
 
 const app = express();
 
