@@ -5,6 +5,7 @@
         class="board-columns"
         cdkDropListOrientation="horizontal"
         cdkDropListGroup
+        cdkDropListLockAxis="x"
         cdkDropList
         (cdkDropListDropped)="dropHorizontal($event)"
         [cdkDropListData]="board.columns"
@@ -39,7 +40,11 @@
               </div>
             </div>
             <div class="button-wrapper">
-              <a class="add-content" role="button" (click)="openDialog()">
+              <a
+                class="add-content"
+                role="button"
+                (click)="openDialog(column.name)"
+              >
                 <mat-icon
                   fontIcon="add"
                   aria-hidden="false"

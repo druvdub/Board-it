@@ -42,9 +42,9 @@ $secondary: #136a8a;
   flex-grow: 1;
   height: fit-content;
   flex-basis: 0;
-
   min-width: 250px;
   max-width: 250px;
+  width: 250px;
   margin: 50px;
   padding: 25px;
   border-radius: 4px;
@@ -55,6 +55,10 @@ $secondary: #136a8a;
   &:not(:first-child) {
     margin-left: 0;
   }
+
+  &:last-child {
+    border: none;
+  }
 }
 
 .board-columns.cdk-drop-list-dragging .task:not(.cdk-drag-placeholder) {
@@ -62,7 +66,12 @@ $secondary: #136a8a;
 }
 
 .tasks-container {
-  flex-grow: 1;
+  border: none;
+  min-height: 20px;
+  background: rgba(white, 0);
+  border-radius: 4px;
+  overflow: hidden;
+  display: block;
 }
 
 .task {

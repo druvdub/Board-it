@@ -3,13 +3,7 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Board } from 'src/app/models/board.model';
@@ -24,8 +18,8 @@ import { AddcardDialogComponent } from '../addcard-dialog/addcard-dialog.compone
 })
 export class MainComponent implements OnInit {
   board: Board = new Board('Board-it', []);
-  private task?: string = '';
-  private title?: string = '';
+  private task?: string;
+  private title?: string;
 
   constructor(private dataService: DataService, public dialog: MatDialog) {}
 
@@ -64,7 +58,7 @@ export class MainComponent implements OnInit {
     }
   }
 
-  openDialog() {
+  openDialog(columnName: string): void {
     const dialogRef = this.dialog.open(AddcardDialogComponent, {
       width: '350px',
       data: { task: this.task },
@@ -72,16 +66,24 @@ export class MainComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.task = result;
-        console.log(`${this.task}`);
+        this.addCard(columnName, this.task);
       }
     });
   }
 
-  deleteList(event: string): void {
-    const array = this.board.columns;
-    array.splice(
-      array.findIndex((prop) => prop.name === event),
+  deleteList(columnName: string): void {
+    const objArray = this.board.columns;
+    objArray.splice(
+      objArray.findIndex((prop) => prop.name === columnName),
       1
     );
+  }
+
+  addCard(columnName: string, task?: string): void {
+    const objArray = this.board.columns;
+    let index = objArray.findIndex((prop) => prop.name === columnName);
+    if (task) {
+      objArray[index].tasks.push(task);
+    }
   }
 }

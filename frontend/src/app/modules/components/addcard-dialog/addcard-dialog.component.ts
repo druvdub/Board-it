@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from 'src/app/models/data.model';
 
@@ -13,7 +13,9 @@ export class AddcardDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.data.task = '';
+  }
 
   onNoClick(): void {
     this.dialogRef.close();

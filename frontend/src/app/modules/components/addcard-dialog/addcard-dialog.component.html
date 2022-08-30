@@ -1,9 +1,15 @@
 <h1 mat-dialog-title>Add Task</h1>
 <div mat-dialog-content>
-  <p>Enter the task details</p>
+  <p>Enter the Text</p>
   <mat-form-field appearance="outline" class="input-width">
-    <mat-label>Task Details</mat-label>
-    <input matInput [(ngModel)]="data.task" />
+    <mat-label>Text</mat-label>
+    <input
+      matInput
+      [(ngModel)]="data.task"
+      autocomplete="no"
+      placeholder="This is a very odd and random placeholder"
+      autofocus
+    />
   </mat-form-field>
 </div>
 <div mat-dialog-actions class="button-section">
