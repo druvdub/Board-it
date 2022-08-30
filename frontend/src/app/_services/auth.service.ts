@@ -36,16 +36,6 @@ export class AuthService {
     );
   }
 
-  /*
-  logout(): Observable<any> {
-    return this.http.post(
-      `${this.baseUrl}api/auth/logout`,
-      {},
-      this.httpOptions
-    );
-  }
-  */
-
   refreshToken(token: string): Observable<any> {
     return this.http.post(
       `${this.baseUrl}api/auth/refreshToken`,

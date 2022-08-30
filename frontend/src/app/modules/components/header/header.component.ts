@@ -1,5 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { StorageService } from 'src/app/_services/storage.service';
@@ -12,7 +12,7 @@ import { DataService } from 'src/app/_shared/data.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn = false;
   eventBusSub?: Subscription;
   private title?: string = '';

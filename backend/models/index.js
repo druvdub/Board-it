@@ -18,6 +18,7 @@ db.sequelize = sequelize;
 
 db.user = require("./user.model")(sequelize, Sequelize);
 db.refreshToken = require("./refreshToken.model")(sequelize, Sequelize);
+db.data = require("./data.model")(sequelize, Sequelize);
 
 db.refreshToken.belongsTo(db.user, {
   foreignKey: "userId",
@@ -25,6 +26,16 @@ db.refreshToken.belongsTo(db.user, {
 });
 
 db.user.hasOne(db.refreshToken, {
+  foreignKey: "userId",
+  targetKey: "id",
+});
+
+db.data.belongsTo(db.user, {
+  foreignKey: "userId",
+  targetKey: "id",
+});
+
+db.user.hasOne(db.data, {
   foreignKey: "userId",
   targetKey: "id",
 });

@@ -20,7 +20,7 @@ app.use(
 
 // defining middleware
 app.use(express.json());
-app.use(require("./middleware/logger"));
+// app.use(require("./middleware/logger"));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
@@ -37,6 +37,7 @@ app.get("/", (req, res) => {
 });
 
 require("./routes/auth.routes")(app);
+require("./routes/user.routes")(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

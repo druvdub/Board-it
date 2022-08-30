@@ -7,8 +7,6 @@ const bcrypt = require("bcryptjs");
 
 const Op = db.Sequelize.Op;
 
-var currentID;
-
 exports.signup = (req, res) => {
   // save user to database
   User.create({
@@ -84,8 +82,6 @@ exports.refreshToken = async (req, res) => {
       where: { token: requestToken },
     });
 
-    console.log(refreshToken);
-
     if (!refreshToken) {
       res.status(403).json({ message: "token not in database" });
       return;
@@ -112,26 +108,3 @@ exports.refreshToken = async (req, res) => {
     return res.status(500).send({ message: err });
   }
 };
-
-/*
-exports.logout = async (req, res, next) => {
-  const { refreshToken: requestToken } = req.body;
-  console.log(req);
-  try {
-    let refreshToken = await RefreshToken.findOne({
-      where: {
-        token: requestToken,
-      },
-    });
-
-    RefreshToken.destroy({ where: { Userid: currentID } });
-    req.session = null;
-
-    return res.status(200).send({
-      message: "Logged Out",
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-*/
