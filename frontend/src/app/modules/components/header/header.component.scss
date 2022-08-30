@@ -1,0 +1,79 @@
+$primary: #267871;
+$secondary: #136a8a;
+
+.navbar {
+  display: flex;
+  top: 0;
+  z-index: 1091;
+  min-height: 4rem;
+  box-shadow: 0 10px 10px 10px #000;
+  flex-direction: row;
+  flex-flow: nowrap;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.nav-links {
+  max-width: 100%;
+  height: 2.5rem;
+  margin-top: 0.25rem;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+ul {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 2rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  list-style: none;
+  margin-top: 0;
+}
+
+.nav-item {
+  display: list-item;
+  text-align: inherit;
+  white-space: inherit;
+  flex-direction: row;
+  padding-left: 2rem;
+}
+
+a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 0.45rem 1.25rem;
+  text-align: center;
+  background: #000;
+  color: whitesmoke;
+  cursor: pointer;
+
+  &.exit {
+    border: 2px solid $secondary;
+    border-radius: 8px;
+    color: $secondary;
+    background: transparent;
+
+    &:hover {
+      color: whitesmoke;
+      background: $secondary;
+      background: -webkit-linear-gradient(210deg, $primary, $secondary);
+      background: linear-gradient(210deg, $primary, $secondary);
+    }
+  }
+
+  &.add-card {
+    border-radius: 8px;
+    border: 2px solid $secondary;
+    background: $secondary;
+    background: -webkit-linear-gradient(210deg, $primary, $secondary);
+    background: linear-gradient(210deg, $primary, $secondary);
+
+    &:hover {
+      color: $primary;
+      border: 2px solid $secondary;
+      background: transparent;
+    }
+  }
+}

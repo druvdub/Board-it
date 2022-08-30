@@ -12,10 +12,9 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { httpsInterceptorProvider } from './_helpers/http.interceptor';
-import { HomeDashboardComponent } from './modules/components/home-dashboard/home-dashboard.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, SignupComponent, HomeDashboardComponent],
+  declarations: [AppComponent, LoginComponent, SignupComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

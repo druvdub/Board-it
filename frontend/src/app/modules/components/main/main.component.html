@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="board">
+    <div class="board-wrapper">
+      <div
+        class="board-columns"
+        cdkDropListOrientation="horizontal"
+        cdkDropListGroup
+        cdkDropList
+        (cdkDropListDropped)="dropHorizontal($event)"
+        [cdkDropListData]="board.columns"
+      >
+        <div class="board-column" *ngFor="let column of board.columns" cdkDrag>
+          <div [id]="column.name">
+            <div class="column-title">
+              {{ column.name }}
+            </div>
+
+            <div
+              class="tasks-container"
+              cdkDropList
+              [cdkDropListData]="column.tasks"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div class="task" *ngFor="let item of column.tasks" cdkDrag>
+                {{ item }}
+              </div>
+            </div>
+            <div class="button-wrapper">
+              <a class="add-content" role="button" (click)="test($event)">
+                <mat-icon
+                  fontIcon="add"
+                  aria-hidden="false"
+                  class="icon"
+                ></mat-icon
+                >Add Card
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
