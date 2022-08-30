@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Add List</h1>
+<div mat-dialog-content>
+  <p>Enter the list name</p>
+  <mat-form-field appearance="outline" class="input-width">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="data.title" autocomplete="off" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="button-section">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button
+    mat-button
+    [mat-dialog-close]="data.title"
+    cdkFocusInitial
+    class="create-button"
+  >
+    Create
+  </button>
+</div>

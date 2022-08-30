@@ -3,9 +3,19 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+
 import { Board } from 'src/app/models/board.model';
 import { Column } from 'src/app/models/column.model';
+import { DataService } from 'src/app/_shared/data.service';
+import { AddcardDialogComponent } from '../addcard-dialog/addcard-dialog.component';
 
 @Component({
   selector: 'app-main',
@@ -13,37 +23,20 @@ import { Column } from 'src/app/models/column.model';
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
-  board: Board = new Board('Test Board', [
-    new Column('Ideas', [
-      'Some random idea. My name is Peter Parker. And I am PSiderMAn. Welp My Lif is really fun',
-      'This is another random idea',
-      'build an awesome application',
-    ]),
-    new Column('Research', [
-      'Lorem ipsum',
-      'foo',
-      "This was in the 'Research' column",
-    ]),
-    new Column('Todo', [
-      'Get to work',
-      'Pick up groceries',
-      'Go home',
-      'Fall asleep',
-    ]),
-    new Column('Done', [
-      'Get up',
-      'Brush teeth',
-      'Take a shower',
-      'Check e-mail',
-      'Walk dog',
-    ]),
-    new Column('Test', ['Lol']),
-  ]);
+  board: Board = new Board('Board-it', []);
+  private task?: string = '';
+  private title?: string = '';
 
-  constructor() {}
+  constructor(private dataService: DataService, public dialog: MatDialog) {}
 
   ngOnInit() {
     console.log(this.board);
+    this.dataService.currentData.subscribe((data) => {
+      if (data) {
+        this.title = data;
+        this.board.columns.push(new Column(this.title, []));
+      }
+    });
   }
 
   dropHorizontal(event: CdkDragDrop<Column[]>): void {
@@ -71,7 +64,24 @@ export class MainComponent implements OnInit {
     }
   }
 
-  test(event: any): void {
-    console.log(event.target.parentElement.parentElement.id);
+  openDialog() {
+    const dialogRef = this.dialog.open(AddcardDialogComponent, {
+      width: '350px',
+      data: { task: this.task },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.task = result;
+        console.log(`${this.task}`);
+      }
+    });
+  }
+
+  deleteList(event: string): void {
+    const array = this.board.columns;
+    array.splice(
+      array.findIndex((prop) => prop.name === event),
+      1
+    );
   }
 }

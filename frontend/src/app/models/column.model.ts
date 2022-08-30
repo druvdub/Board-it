@@ -1,5 +1,7 @@
 export class Column {
   constructor(public name: string, public tasks: string[]) {}
 
-  private getColumn(name: string): void {}
+  addColumn(object: any, name: string) {
+    object.push(new Column(name, []));
+  }
 }

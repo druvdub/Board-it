@@ -11,8 +11,21 @@
       >
         <div class="board-column" *ngFor="let column of board.columns" cdkDrag>
           <div [id]="column.name">
-            <div class="column-title">
-              {{ column.name }}
+            <div class="title-wrapper">
+              <div class>
+                {{ column.name }}
+              </div>
+              <div class="button-menu">
+                <button mat-icon-button #menuTrigger [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="deleteList(column.name)">
+                    <mat-icon color="dark">delete</mat-icon>
+                    <span>Delete</span>
+                  </button>
+                </mat-menu>
+              </div>
             </div>
 
             <div
@@ -26,7 +39,7 @@
               </div>
             </div>
             <div class="button-wrapper">
-              <a class="add-content" role="button" (click)="test($event)">
+              <a class="add-content" role="button" (click)="openDialog()">
                 <mat-icon
                   fontIcon="add"
                   aria-hidden="false"

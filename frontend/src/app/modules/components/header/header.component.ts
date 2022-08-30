@@ -1,8 +1,11 @@
+import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { StorageService } from 'src/app/_services/storage.service';
 import { EventService } from 'src/app/_shared/event.service';
+import { DialogComponent } from '../dialog/dialog.component';
+import { DataService } from 'src/app/_shared/data.service';
 
 @Component({
   selector: 'app-header',
@@ -12,11 +15,14 @@ import { EventService } from 'src/app/_shared/event.service';
 export class HeaderComponent implements OnInit {
   isLoggedIn = false;
   eventBusSub?: Subscription;
+  private title?: string = '';
 
   constructor(
     private router: Router,
     private storageService: StorageService,
-    private eventService: EventService
+    private eventService: EventService,
+    private dataService: DataService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -41,19 +47,20 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['.././login']);
   }
 
-  /*
-  logout(): void {
-    this.authService.logout().subscribe({
-      next: (res) => {
-        this.storageService.clean();
-        this.storageService.setLogin(false);
-        window.location.reload();
-        this.router.navigate(['.././login']);
-      },
-      error: (err) => {
-        console.log(err);
-      },
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '350px',
+      data: { title: this.title },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.title = result;
+        this.sendDataToComponent(this.title);
+      }
     });
   }
-  */
+
+  sendDataToComponent(data: string | undefined): void {
+    this.dataService.setData(data);
+  }
 }

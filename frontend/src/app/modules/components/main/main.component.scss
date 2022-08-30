@@ -57,13 +57,6 @@ $secondary: #136a8a;
   }
 }
 
-.column-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 30px;
-  color: white;
-}
-
 .board-columns.cdk-drop-list-dragging .task:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
@@ -130,5 +123,25 @@ a {
 
   &:hover {
     background: rgba(black, 1);
+  }
+}
+
+.title-wrapper {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: baseline;
+  color: whitesmoke;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+  font-weight: 600;
+
+  &.button-menu {
+    padding: -20px;
+    color: whitesmoke;
+    font-size: 20px;
   }
 }
