@@ -28,6 +28,9 @@ exports.receiveData = (req, res) => {
       });
     })
     .catch((err) => {
+      res.status(200).send({ message: `${err.message}` });
       console.log(err);
     });
 };
+
+exports.fetchData = () => {};

@@ -35,14 +35,13 @@ export class MainComponent implements OnInit {
   ngOnInit() {
     this.isLoggedIn = !!this.storageService.getToken();
 
-    console.log(this.isLoggedIn);
     this.dataService.currentData.subscribe((data) => {
       if (data) {
         this.title = data;
         this.board.columns.push(new Column(this.title, []));
+        this.sendBoardData();
       }
     });
-    // this.sendBoardData();
   }
 
   dropHorizontal(event: CdkDragDrop<Column[]>): void {
@@ -51,6 +50,7 @@ export class MainComponent implements OnInit {
       event.previousIndex,
       event.currentIndex
     );
+    this.sendBoardData();
   }
 
   drop(event: CdkDragDrop<string[]>): void {
@@ -68,7 +68,6 @@ export class MainComponent implements OnInit {
         event.currentIndex
       );
     }
-    console.log(this.board);
     this.sendBoardData();
   }
 
@@ -91,7 +90,7 @@ export class MainComponent implements OnInit {
       objArray.findIndex((prop) => prop.name === columnName),
       1
     );
-    // this.sendBoardData();
+    this.sendBoardData();
   }
 
   addCard(columnName: string, task?: string): void {
@@ -100,7 +99,7 @@ export class MainComponent implements OnInit {
     if (task) {
       objArray[index].tasks.push(task);
     }
-    // this.sendBoardData();
+    this.sendBoardData();
   }
 
   sendBoardData(): void {
