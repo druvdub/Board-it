@@ -12,4 +12,5 @@ module.exports = function (app) {
   });
 
   app.post("/api/data/board", [authJwt.verifyToken], controller.receiveData);
+  app.get("/api/data/board/fetch", [authJwt.verifyToken], controller.fetchData);
 };

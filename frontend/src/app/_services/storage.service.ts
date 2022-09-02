@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Board } from '../models/board.model';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +10,7 @@ export class StorageService {
   private TOKEN: string = 'auth-token';
   private REFRESH_TOKEN: string = 'auth-refreshtoken';
   private isLogged: boolean = false;
+  private BOARD_DATA: string = '{"boardName":"Board-it", "columns":[]}';
 
   constructor(private router: Router) {}
 
@@ -67,5 +69,17 @@ export class StorageService {
 
   public setLogin(bool: boolean): void {
     this.isLogged = bool;
+  }
+
+  public setData(board: Board): void {
+    window.sessionStorage.removeItem(this.BOARD_DATA);
+    window.sessionStorage.setItem(this.BOARD_DATA, JSON.stringify(board));
+  }
+
+  public getData(): any {
+    const data = window.sessionStorage.getItem(this.BOARD_DATA);
+    if (data) {
+      return JSON.parse(data);
+    }
   }
 }

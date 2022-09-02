@@ -33,4 +33,21 @@ exports.receiveData = (req, res) => {
     });
 };
 
-exports.fetchData = () => {};
+exports.fetchData = (req, res) => {
+  Data.findOne({
+    where: {
+      boardName: "Board-it",
+    },
+  })
+    .then(async (obj) => {
+      return res.status(200).send(
+        JSON.stringify({
+          board: obj.boardName,
+          columns: obj.columns,
+        })
+      );
+    })
+    .catch((err) => {
+      res.status(401).send({ message: `${err.message}` });
+    });
+};

@@ -3,15 +3,16 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
 
 import { Board } from 'src/app/models/board.model';
 import { Column } from 'src/app/models/column.model';
 import { StorageService } from 'src/app/_services/storage.service';
 import { UserService } from 'src/app/_services/user.service';
 import { DataService } from 'src/app/_shared/data.service';
+import { EventData } from 'src/app/_shared/event.class';
+import { EventService } from 'src/app/_shared/event.service';
 import { AddcardDialogComponent } from '../addcard-dialog/addcard-dialog.component';
 
 @Component({
@@ -19,29 +20,34 @@ import { AddcardDialogComponent } from '../addcard-dialog/addcard-dialog.compone
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, AfterViewInit {
   isLoggedIn = false;
   board: Board = new Board('Board-it', []);
   private task?: string;
   private title?: string;
+  private content?: string;
 
   constructor(
     private userService: UserService,
     private storageService: StorageService,
     private dataService: DataService,
+    private eventService: EventService,
     public dialog: MatDialog
   ) {}
 
   ngOnInit() {
     this.isLoggedIn = !!this.storageService.getToken();
-
     this.dataService.currentData.subscribe((data) => {
       if (data) {
         this.title = data;
         this.board.columns.push(new Column(this.title, []));
-        this.sendBoardData();
+        this.storeSessionData();
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this.fetchBoardData();
   }
 
   dropHorizontal(event: CdkDragDrop<Column[]>): void {
@@ -50,7 +56,7 @@ export class MainComponent implements OnInit {
       event.previousIndex,
       event.currentIndex
     );
-    this.sendBoardData();
+    this.storeSessionData();
   }
 
   drop(event: CdkDragDrop<string[]>): void {
@@ -68,7 +74,7 @@ export class MainComponent implements OnInit {
         event.currentIndex
       );
     }
-    this.sendBoardData();
+    this.storeSessionData();
   }
 
   openDialog(columnName: string): void {
@@ -90,7 +96,7 @@ export class MainComponent implements OnInit {
       objArray.findIndex((prop) => prop.name === columnName),
       1
     );
-    this.sendBoardData();
+    this.storeSessionData();
   }
 
   addCard(columnName: string, task?: string): void {
@@ -99,24 +105,38 @@ export class MainComponent implements OnInit {
     if (task) {
       objArray[index].tasks.push(task);
     }
-    this.sendBoardData();
+    this.storeSessionData();
   }
 
-  sendBoardData(): void {
+  storeSessionData(): void {
     if (this.isLoggedIn) {
       const boardData = this.board;
       if (boardData.columns.length === 0) {
         console.log('board is empty. need to fetch from backend');
       }
-      const board = boardData.boardName;
-      const columnData = JSON.stringify(boardData.columns);
+      this.storageService.setData(boardData);
+    }
+  }
 
-      this.userService.sendData(board, columnData).subscribe({
-        next: () => {
-          console.log('data sent');
+  fetchBoardData(): void {
+    if (this.isLoggedIn) {
+      this.userService.fetchData().subscribe({
+        next: (data) => {
+          this.content = data;
+          if (this.content) {
+            const boardData = JSON.parse(this.content);
+            const boardName = boardData.board;
+            const columns = JSON.parse(boardData.columns);
+            this.board = new Board(boardName, columns);
+            this.storeSessionData();
+          }
         },
-        error: (error) => {
-          console.log(`${error.error.message}`);
+        error: (err) => {
+          console.log(err.error.message || err.error || err.message);
+
+          if (err.status === 403) {
+            this.eventService.emit(new EventData('logout', null));
+          }
         },
       });
     }

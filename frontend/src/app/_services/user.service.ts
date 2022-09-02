@@ -23,6 +23,8 @@ export class UserService {
   }
 
   fetchData(): Observable<any> {
-    return this.http.get(`${this.baseUrl}api/data/board/fetch`);
+    return this.http.get(`${this.baseUrl}api/data/board/fetch`, {
+      responseType: 'text',
+    });
   }
 }

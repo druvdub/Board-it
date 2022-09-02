@@ -6,6 +6,7 @@ import { StorageService } from 'src/app/_services/storage.service';
 import { EventService } from 'src/app/_shared/event.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { DataService } from 'src/app/_shared/data.service';
+import { UserService } from 'src/app/_services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private storageService: StorageService,
     private eventService: EventService,
     private dataService: DataService,
+    private userService: UserService,
     public dialog: MatDialog
   ) {}
 
@@ -40,9 +42,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
+    const boardData = this.storageService.getData();
+    this.userService
+      .sendData(boardData.boardName, JSON.stringify(boardData.columns))
+      .subscribe({
+        next: () => {
+          console.log('data sent');
+        },
+        error: (error) => {
+          console.log(`${error.error.message}`);
+        },
+      });
     this.storageService.clean();
     this.isLoggedIn = false;
-    this.storageService.setLogin(false);
     window.location.reload();
     this.router.navigate(['.././login']);
   }
