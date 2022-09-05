@@ -3,6 +3,13 @@ const config = require("../config/auth.config");
 
 const { TokenExpiredError } = jwt;
 
+/**
+ * handles error if TokenExpiredError is raised
+ *
+ * @param {*} err - error
+ * @param {*} res - response status
+ * @returns {object} - sends message Access Token expired
+ */
 const catchError = (err, res) => {
   if (err instanceof TokenExpiredError) {
     return res.status(401).send({
@@ -11,6 +18,9 @@ const catchError = (err, res) => {
   }
 };
 
+/**
+ * Verifies the validity of token
+ */
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
   if (!token) {

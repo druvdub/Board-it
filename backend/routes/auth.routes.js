@@ -1,6 +1,11 @@
 const controller = require("../controllers/auth.controller");
 const { verifySignup } = require("../middleware");
 
+/**
+ * Sets up routes for authentication functions
+ *
+ * @param {*} app - express()
+ */
 module.exports = function (app) {
   app.use(function (req, res, next) {
     res.header(

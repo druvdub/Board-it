@@ -1,4 +1,11 @@
-function logger(req, res, next) {
+/**
+ * prints request method, url, and status code with a timestamp
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
+export function logger(req, res, next) {
   res.on("finish", () => {
     console.log(
       `${req.method} ${req.originalUrl} ${
@@ -8,5 +15,3 @@ function logger(req, res, next) {
   });
   next();
 }
-
-module.exports = logger;

@@ -1,6 +1,11 @@
 const { authJwt } = require("../middleware");
 const controller = require("../controllers/user.controller");
 
+/**
+ * Sets up routes for data functions
+ *
+ * @param {*} app - express()
+ */
 module.exports = function (app) {
   app.use(function (req, res, next) {
     res.header(

@@ -1,3 +1,10 @@
+/**
+ * defines the Model for data table in database
+ *
+ * @param {*} sequelize
+ * @param {*} Sequelize
+ * @returns Data table
+ */
 module.exports = (sequelize, Sequelize) => {
   const Data = sequelize.define("dataset", {
     boardName: {

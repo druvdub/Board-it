@@ -2,6 +2,9 @@ const db = require("../models");
 
 const User = db.user;
 
+/**
+ * checks duplicate value if email already has been used to signup
+ */
 checkDuplicate = async (req, res, next) => {
   try {
     email = await User.findOne({

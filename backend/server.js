@@ -12,6 +12,7 @@ db.sequelize.sync();
 const app = express();
 const path = `${__dirname}/views/frontend/`;
 
+// use cors middleware with config options
 app.use(
   cors({
     credentials: true,
@@ -19,7 +20,6 @@ app.use(
   })
 );
 
-// defining middleware
 app.use(express.json());
 app.use(require("./middleware/logger"));
 app.use(express.urlencoded({ extended: true }));

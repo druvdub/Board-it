@@ -1,5 +1,8 @@
 require("dotenv").config();
 
+/**
+ * config for database
+ */
 module.exports = {
   HOST: "localhost",
   USER: process.env.DB_USER,

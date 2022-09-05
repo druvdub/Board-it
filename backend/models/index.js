@@ -16,9 +16,12 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+// creates the tables in database
 db.user = require("./user.model")(sequelize, Sequelize);
 db.refreshToken = require("./refreshToken.model")(sequelize, Sequelize);
 db.data = require("./data.model")(sequelize, Sequelize);
+
+// defines associations between different tables
 
 db.refreshToken.belongsTo(db.user, {
   foreignKey: "userId",

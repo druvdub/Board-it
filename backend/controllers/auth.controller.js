@@ -7,8 +7,16 @@ const bcrypt = require("bcryptjs");
 
 const Op = db.Sequelize.Op;
 
+/**
+ * @route POST /api/auth/signup
+ * Function to handle signup, uses bcrypt to hash the password with salt of length 12
+ *
+ * @param {object} req - is the request we get from frontend at the endpoint, here i.e. {email, password}
+ * @param {object} res - is the response we send to the endpoint
+ *
+ */
 exports.signup = (req, res) => {
-  // save user to database
+  // saves user to database and checks table for verification
   User.create({
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 12),
@@ -31,8 +39,15 @@ exports.signup = (req, res) => {
     });
 };
 
+/**
+ * @route POST /api/auth/login
+ * Function to handle the login process, checks validity of password
+ *
+ * @param {object} req - is the request we get from frontend at the endpoint, here i.e. {email, password}
+ * @param {object} res - is the response we send to the endpoint
+ */
 exports.login = (req, res) => {
-  // find user in database
+  // finds user in database
   User.findOne({
     where: {
       email: req.body.email,
@@ -71,6 +86,15 @@ exports.login = (req, res) => {
     });
 };
 
+/**
+ * @route POST /api/auth/refreshtoken
+ * Handles the refresh token and destroys the refresh token if expired,
+ * and generates a new access token with token config if not expired
+ *
+ * @param {object} req - request from frontend, with refresh token
+ * @param {object} res - response
+ * @returns {object} - { accessToken, refreshToken } sends token strings
+ */
 exports.refreshToken = async (req, res) => {
   const { refreshToken: requestToken } = req.body;
   if (requestToken == null) {

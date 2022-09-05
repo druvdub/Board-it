@@ -3,6 +3,13 @@ const { data: Data } = db;
 
 const Op = db.Sequelize.Op;
 
+/**
+ * @route POST /api/data/board
+ * Receives data from the frontend about the kanban board and creates or updates in the database
+ *
+ * @param {object} req - gets { userId, boardName, columnData }
+ * @param {object} res - sends status update
+ */
 exports.receiveData = (req, res) => {
   Data.findOne({
     where: {
@@ -35,6 +42,13 @@ exports.receiveData = (req, res) => {
     });
 };
 
+/**
+ * @route GET /api/data/board/fetch
+ * Fetches data from the database and sends it to the frontend
+ *
+ * @param {object} req - gets { userId }
+ * @param {object} res - sends { boardName, columnData }
+ */
 exports.fetchData = (req, res) => {
   Data.findOne({
     where: {
