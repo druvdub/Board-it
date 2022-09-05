@@ -6,7 +6,7 @@ const Op = db.Sequelize.Op;
 exports.receiveData = (req, res) => {
   Data.findOne({
     where: {
-      boardName: req.body.board,
+      userId: req.userId,
     },
   })
     .then(async (data) => {
@@ -14,6 +14,7 @@ exports.receiveData = (req, res) => {
         Data.create({
           boardName: req.body.board,
           columns: req.body.columns,
+          userId: req.userId,
         });
       }
       Data.update(
@@ -21,6 +22,7 @@ exports.receiveData = (req, res) => {
         {
           where: {
             boardName: req.body.board,
+            userId: req.userId,
           },
         }
       ).then((result) => {
@@ -37,6 +39,7 @@ exports.fetchData = (req, res) => {
   Data.findOne({
     where: {
       boardName: "Board-it",
+      userId: req.userId,
     },
   })
     .then(async (obj) => {

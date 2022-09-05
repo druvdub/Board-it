@@ -10,6 +10,7 @@ const db = require("./models");
 db.sequelize.sync();
 
 const app = express();
+const path = `${__dirname}/views/frontend/`;
 
 app.use(
   cors({
@@ -20,7 +21,7 @@ app.use(
 
 // defining middleware
 app.use(express.json());
-// app.use(require("./middleware/logger"));
+app.use(require("./middleware/logger"));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
@@ -30,10 +31,12 @@ app.use(
   })
 );
 
+app.use(express.static(path));
+
 app.get("/", (req, res) => {
   console.log(req.session.user);
-
-  res.send("test");
+  res.send({ message: "test" });
+  // res.sendFile(`${path}index.html`);
 });
 
 require("./routes/auth.routes")(app);
