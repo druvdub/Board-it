@@ -11,6 +11,7 @@ const routes: Routes = [
   {
     path: 'home',
     canActivate: [AuthGuard],
+    // lazy loading module
     loadChildren: () =>
       import('./modules/home/home.module').then((module) => module.HomeModule),
   },

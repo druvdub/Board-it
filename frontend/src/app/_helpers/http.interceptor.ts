@@ -33,7 +33,13 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     private authService: AuthService,
     private storageService: StorageService
   ) {}
-
+  /**
+   * intercept requests or responses handled
+   *
+   * @param request
+   * @param next
+   * @returns
+   */
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
@@ -42,10 +48,10 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     const token = this.storageService.getToken();
 
     if (token != null) {
-      // request = request.clone({
-      //   withCredentials: true,
-      //   headers: request.headers.set(TOKEN_HEADER, token),
-      // });
+      /* request = request.clone({
+        withCredentials: true,
+        headers: request.headers.set(TOKEN_HEADER, token),
+      }); */
       authRequest = this.tokenHandler(request, token);
     }
 
@@ -63,6 +69,13 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     );
   }
 
+  /**
+   * handles 401 error - unauthorized for incomplete request due to lack
+   * of valid authentication credentials
+   *
+   * use refreshTokenSubject to track the current refresh token value.
+   * It is null if no token is currently available.
+   */
   private handleError(req: HttpRequest<unknown>, next: HttpHandler) {
     if (!this.refreshed) {
       this.refreshed = true;
@@ -72,6 +85,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
 
       if (token) {
         return this.authService.refreshToken(token).pipe(
+          // transforms token value and merges at output Observable
           switchMap((token: any) => {
             this.refreshed = false;
 
@@ -96,7 +110,9 @@ export class HttpRequestInterceptor implements HttpInterceptor {
       switchMap((token) => next.handle(this.tokenHandler(req, token)))
     );
   }
-
+  /**
+   * returns a copy of the request with token, and token header
+   */
   private tokenHandler(req: HttpRequest<unknown>, token: string) {
     return req.clone({
       headers: req.headers.set(TOKEN_HEADER, token),

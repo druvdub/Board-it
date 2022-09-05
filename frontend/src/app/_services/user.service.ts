@@ -14,6 +14,13 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
+  /**
+   * sends request to endpoint
+   *
+   * @param board - string with board name
+   * @param columns - string with column data
+   * @returns {Observable} - sends POST request with { board, columns }
+   */
   sendData(board: string, columns: string): Observable<any> {
     return this.http.post(
       `${this.baseUrl}api/data/board`,
@@ -22,6 +29,11 @@ export class UserService {
     );
   }
 
+  /**
+   * sends request to endpoint
+   *
+   * @returns {Observable} - sends GET request to fetch data
+   */
   fetchData(): Observable<any> {
     return this.http.get(`${this.baseUrl}api/data/board/fetch`, {
       responseType: 'text',

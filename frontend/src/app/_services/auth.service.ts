@@ -12,8 +12,19 @@ const httpOptions = {
 export class AuthService {
   private baseUrl = 'http://localhost:8080/';
 
+  /**
+   *
+   * @param http - HttpClient
+   */
   constructor(private http: HttpClient) {}
 
+  /**
+   * send request to endpoint
+   *
+   * @param email - string
+   * @param password - string
+   * @returns { Observable } POST request to endpoint with { email, password } for login
+   */
   login(email: string, password: string): Observable<any> {
     return this.http.post(
       `${this.baseUrl}api/auth/login`,
@@ -25,6 +36,13 @@ export class AuthService {
     );
   }
 
+  /**
+   * send request to endpoint
+   *
+   * @param email - string
+   * @param password - string
+   * @returns { Observable } POST request to endpoint with { email, password } for signup
+   */
   signup(email: string, password: string): Observable<any> {
     return this.http.post(
       `${this.baseUrl}api/auth/signup`,
@@ -36,6 +54,12 @@ export class AuthService {
     );
   }
 
+  /**
+   * send request to endpoint
+   *
+   * @param token - string
+   * @returns {Observable} POST request to endpoint with { refreshToken }
+   */
   refreshToken(token: string): Observable<any> {
     return this.http.post(
       `${this.baseUrl}api/auth/refreshToken`,
