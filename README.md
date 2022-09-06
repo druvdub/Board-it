@@ -38,12 +38,14 @@ Kanban board web app for managing project tasks in lists.
 <img align="left" alt="Express.js" width="48px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" style="padding-right:10px;margin-bottom:30px;" />
 <img align="left" alt="Angular.io" width="48px" src="https://angular.io/assets/images/logos/angular/angular.svg" style="padding-right:10px;margin-bottom:30px;" />
 <img align="left" alt="Node.js" width="48px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" style="padding-right:10px;margin-bottom:30px;" /> 
-
 &nbsp;
 <br />
-
----
 
 ![Banner](./frontend/src/assets/login.png?raw=true)
 ![Banner](./frontend/src/assets/signup.png?raw=true)
 ![Banner](./frontend/src/assets/createlist.png?raw=true)
+
+
+## Notice:exclamation:
+
+To deploy the application on heroku, the MySQL database has been migrated to PostgreSQL
