@@ -37,6 +37,7 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.isLoggedIn = !!this.storageService.getToken();
+
     this.dataService.currentData.subscribe((data) => {
       if (data) {
         this.title = data;
@@ -122,13 +123,17 @@ export class MainComponent implements OnInit, AfterViewInit {
     if (this.isLoggedIn) {
       this.userService.fetchData().subscribe({
         next: (data) => {
-          this.content = data;
-          if (this.content) {
-            const boardData = JSON.parse(this.content);
-            const boardName = boardData.board;
-            const columns = JSON.parse(boardData.columns);
-            this.board = new Board(boardName, columns);
-            this.storeSessionData();
+          if (data) {
+            this.content = data;
+            if (this.content) {
+              const boardData = JSON.parse(this.content);
+              const boardName = boardData.board;
+              const columns = JSON.parse(boardData.columns);
+              this.board = new Board(boardName, columns);
+              this.storeSessionData();
+            }
+          } else {
+            this.board = new Board('Board-it', []);
           }
         },
         error: (err) => {

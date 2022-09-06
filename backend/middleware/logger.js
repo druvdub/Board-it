@@ -5,7 +5,7 @@
  * @param {*} res
  * @param {*} next
  */
-export function logger(req, res, next) {
+function logger(req, res, next) {
   res.on("finish", () => {
     console.log(
       `${req.method} ${req.originalUrl} ${
@@ -15,3 +15,5 @@ export function logger(req, res, next) {
   });
   next();
 }
+
+module.exports = logger;

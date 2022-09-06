@@ -31,7 +31,7 @@ app.use(
   })
 );
 
-app.use(express.static(path));
+// app.use(express.static(path));
 
 app.get("/", (req, res) => {
   console.log(req.session.user);
