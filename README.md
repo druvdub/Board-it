@@ -6,6 +6,10 @@ Kanban board web app for managing project tasks in lists.
 
 ![Banner](./frontend/src/assets/cards.png?raw=true)
 
+## :pushpin: Deployment:
+
+To deploy the application on heroku, the MySQL database has been migrated to PostgreSQL
+
 ## :rocket: Features
 
 - [x] Login/Signup system 
@@ -31,6 +35,12 @@ Kanban board web app for managing project tasks in lists.
 - Sass
 - TypeScript
 - JavaScript
+- MySQL
+- PostgreSQL
+- Express.js
+- Angular
+- Node.js
+- Sequelize ORM
 
 ### MEAN
 
@@ -41,11 +51,5 @@ Kanban board web app for managing project tasks in lists.
 &nbsp;
 <br />
 
-![Banner](./frontend/src/assets/login.png?raw=true)
 ![Banner](./frontend/src/assets/signup.png?raw=true)
-![Banner](./frontend/src/assets/createlist.png?raw=true)
 
-
-## Notice:exclamation:
-
-To deploy the application on heroku, the MySQL database has been migrated to PostgreSQL
