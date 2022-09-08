@@ -10,6 +10,11 @@ Kanban board web app for managing project tasks in lists.
 
 To deploy the application on heroku, the MySQL database has been migrated to PostgreSQL
 
+## :question: Usage
+- On navigating to the webapp, it directs you to the login page. 
+- If you are a *New User*, navigate to the Signup Page to by clicking the `New User?` link
+- For first time login, create lists by clicking on the <kbd>Add Lists</kbd> button
+
 ## :rocket: Features
 
 - [x] Login/Signup system 
